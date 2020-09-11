@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ButtonData.cs" />
+    <Compile Include="ControlBaseData.cs" />
     <Compile Include="ControlData.cs" />
     <Compile Include="ControlsView.cs">
       <SubType>Form</SubType>
@@ -72,6 +73,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextBoxData.cs" />
+    <EmbeddedResource Include="ControlsView.resx">
+      <DependentUpon>ControlsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>

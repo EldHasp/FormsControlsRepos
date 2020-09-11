@@ -15,13 +15,9 @@ namespace FormsControls
         public event Action ControlsViewShow;
         public event Action ControlsSave;
 
-        private Presenter presenter;
-
         public MainView()
         {
             InitializeComponent();
-
-            presenter = new Presenter(this);
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -1,36 +1,44 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace FormsControls
 {
-
-    public class ControlData
+    public class ControlData : ControlBaseData
     {
-        public int Id { get; }
-        public ControlType Type { get; }
+
+
+        public ControlData(int id)
+            : base(id, ControlType.Control)
+        { }
+
+        public ControlData()
+            : base(ControlType.Control)
+        { }
+
+        protected ControlData(int id, ControlType type)
+            :base(id, type)
+        { }
+
+        protected ControlData(ControlType type)
+            : base( type)
+        { }
+
+        protected override Control CreateInstanceCoreUI()
+            => new Control();
+
+        protected override ControlBaseData CreateInstanceCore(int id)
+            => new ControlData(id);
+
+        static ControlData()
+        {
+            AddDerivedClasses(new ControlData());
+        }
+
         public string Name { get; set; }
         public string Text { get; set; }
         public int Left { get; set; }
         public int Top { get; set; }
-
-        protected ControlData(int id, ControlType type)
-        {
-            Id = id;
-            Type = type;
-        }
-
-        public ControlData(int id)
-            : this(id, ControlType.Control)
-        { }
-
-        public ControlData()
-            : this(ControlType.Control)
-        { }
-
-
-        protected ControlData(ControlType type)
-            : this(int.MinValue, type)
-        { }
-        public virtual void SetValue(Dictionary<string, string> values)
+        public override void SetValues(Dictionary<string, string> values)
         {
             string value;
             if (values.TryGetValue(nameof(Name), out value))
@@ -42,5 +50,14 @@ namespace FormsControls
             if (values.TryGetValue(nameof(Top), out value))
                 Top = int.Parse(value);
         }
+
+        public override void SetProperties(Control control)
+        {
+            control.Text = Text;
+            control.Name = Name;
+            control.Top = Top;
+            control.Left = Left;
+        }
+
     }
 }
