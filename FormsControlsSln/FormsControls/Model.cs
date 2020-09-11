@@ -14,44 +14,29 @@ namespace FormsControls
             {2, new Dictionary<string, string>() { { "Name", "TextBox1" }, { "Type", "TextBox" }, {"Text","Текст"}, {"Left", "150" } , {"Top", "100" }, { "AcceptsReturn", "true" } } }
         };
 
-        public Dictionary<int, ControlData> GetData()
+        public Dictionary<int, ControlBaseData> GetData()
         {
-            Dictionary<int, ControlData> dict = new Dictionary<int, ControlData>();
+            Dictionary<int, ControlBaseData> dict = new Dictionary<int, ControlBaseData>();
             HashSet<string> names = new HashSet<string>();
             foreach (var item in data)
             {
-                if (names.Contains(item.Value["Name"]))
+                string name = item.Value[nameof(ControlData.Name)];
+                if (names.Contains(name))
                     throw new Exception("У элементов одинаковые имена.");
-                ControlData control;
-                switch (item.Value["Type"])
-                {
-                    case "Button":
-                        control = new ButtonData(item.Key);
-                        break;
-                    case "TextBox":
-                        control = new TextBoxData(item.Key);
-                        break;
-                    case "Control":
-                        control = new ControlData(item.Key);
-                        break;
-                    default:
-                        throw new Exception("Такого типа элементов не существует.");
-                }
+                names.Add(name);
 
-                control.SetValue(item.Value);
-
-                names.Add(control.Name);
+                ControlBaseData control = ControlBaseData.Greate(item.Key, item.Value);
                 dict.Add(control.Id, control);
             }
 
             return dict;
         }
 
-        public void Save(ICollection<ControlData> data)
+        public void Save(ICollection<ControlBaseData> data)
         {
             // Сохранение data
 
-            MessageBox.Show("Надо сохранить элементы:" + string.Concat(data.Select(dt => Environment.NewLine  + dt.Name)));
+            MessageBox.Show("Надо сохранить элементы:" + string.Concat(data.Select(dt => Environment.NewLine + ((ControlData)dt).Name)));
         }
     }
 }

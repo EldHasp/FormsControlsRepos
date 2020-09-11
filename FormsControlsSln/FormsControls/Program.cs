@@ -16,7 +16,16 @@ namespace FormsControls
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainView());
+            presenter = new Presenter(new MainView());
+            Application.Run(presenter.MainView);
         }
+
+        /// <summary>Используемые типы</summary>
+        static ControlBaseData[] usingControlBaseData =
+        {
+            new ButtonData(),
+            new TextBoxData()
+        };
+        static Presenter presenter;
     }
 }

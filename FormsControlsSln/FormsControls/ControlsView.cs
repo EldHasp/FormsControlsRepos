@@ -16,16 +16,14 @@ namespace FormsControls
         public ControlsView()
         {
             InitializeComponent();
-
-            FormClosed += ControlsView_FormClosed;
         }
 
         private void ControlsView_FormClosed(object sender, FormClosedEventArgs e)
             => ControlsViewClose?.Invoke();
 
-        private readonly Dictionary<Control, ControlData> controlsData = new Dictionary<Control, ControlData>();
-        IDictionary<int, ControlData> data;
-        public void LoadControls(IDictionary<int, ControlData> data)
+        private readonly Dictionary<Control, ControlBaseData> controlsData = new Dictionary<Control, ControlBaseData>();
+        IDictionary<int, ControlBaseData> data;
+        public void LoadControls(IDictionary<int, ControlBaseData> data)
         {
             this.data = data;
             controlsData.Clear();
@@ -35,49 +33,17 @@ namespace FormsControls
                 if (item.Key != item.Value.Id)
                     throw new Exception("Идентификаторы не совпадают.");
 
-                Control control = Create(item.Value);
+                Control control = item.Value.GreateUI();
 
                 controlsData.Add(control, item.Value);
                 Controls.Add(control);
             }
         }
 
-        public ICollection<ControlData> GetControls()
+        public ICollection<ControlBaseData> GetControls()
             => data?.Values;
 
         
-        public static Control Create(ControlData data)
-        {
-            Control control = null;
-            if (data is ButtonData bData)
-            {
-                if (control == null)
-                    control = new Button();
-                Button button = (Button)control;
-                button.AutoEllipsis = bData.AutoEllipsis;
-            }
-            if (data is TextBoxData tbData)
-            {
-                if (control == null)
-                    control = new TextBox();
-                TextBox tBox = (TextBox)control;
-                tBox.AcceptsReturn = tbData.AcceptsReturn;
-            }
-            if (data is ControlData cntrData)
-            {
-                if (control == null)
-                    control = new Control();
-                control.Name = cntrData.Name;
-                control.Text = cntrData.Text;
-                control.Left = cntrData.Left;
-                control.Top = cntrData.Top;
-            }
-
-            if (control == null)
-                throw new Exception("Такой тип не обрабатывается.");
-
-            return control;
-        }
     }
 
 }

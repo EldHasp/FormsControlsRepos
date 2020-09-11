@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Runtime.CompilerServices;
 
 namespace FormsControls
 {
+    [DefaultProperty(nameof(TypeName))]
     public class ControlType : IEquatable<ControlType>, IEqualityComparer<ControlType>
     {
         public string TypeName { get; }
@@ -48,5 +51,8 @@ namespace FormsControls
         {
             Types = new ReadOnlyDictionary<string, ControlType>(types);
         }
+
+        public override string ToString()
+            => $"\"{TypeName}\"";
     }
 }
